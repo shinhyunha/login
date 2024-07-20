@@ -1,4 +1,4 @@
-package com.simplelogin.login
+package com.simplelogin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
