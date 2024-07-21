@@ -3,3 +3,8 @@
 naver:
   client-id: 123
   client-secret: 456
+
+# kakao
+kakao:
+  rest-api-key: 123123142351
+  client-secret-key: 1325798127491

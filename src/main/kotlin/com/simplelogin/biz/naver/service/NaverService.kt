@@ -51,12 +51,11 @@ class NaverService(
     fun restClientGet(uri: String): ResponseEntity<String> {
         try {
             val restClient = RestClient.create()
-            val result = restClient.get()
+            return restClient.get()
                 .uri(uri)
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .toEntity<String>()
-            return result
         } catch (e: RuntimeException) {
             println("통신 오류 발생")
             e.printStackTrace()
