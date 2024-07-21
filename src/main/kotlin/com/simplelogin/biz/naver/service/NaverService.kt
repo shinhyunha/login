@@ -1,11 +1,15 @@
 package com.simplelogin.biz.naver.service
 
-import com.simplelogin.biz.naver.dto.TokenAccessNaverDto
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.simplelogin.biz.naver.dto.ProfileDto
+import com.simplelogin.biz.naver.dto.Response
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
+import org.springframework.web.client.body
 import org.springframework.web.client.toEntity
 
 @Service
@@ -54,6 +58,34 @@ class NaverService(
                 .toEntity<String>()
             return result
         } catch (e: RuntimeException) {
+            println("통신 오류 발생")
+            e.printStackTrace()
+            throw e
+        }
+    }
+
+    fun searchProfile(token: String): ProfileDto {
+        var uri = "https://openapi.naver.com/v1/nid/me"
+
+        try {
+            var restClient = RestClient.create()
+            var result = restClient.get()
+                .uri(uri)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+                .accept(APPLICATION_JSON)
+                .retrieve()
+                .toEntity<String>()
+
+            val data = ObjectMapper().readTree(result.body)["response"]
+
+            val profileDto = ProfileDto(
+                id = data["id"].toString().replace("\"", ""),
+                nickname = data["nickname"].toString().replace("\"", ""),
+                name = data["name"].toString().replace("\"", "")
+            )
+            println("profileDto = ${profileDto}")
+            return profileDto
+        }catch (e: RuntimeException) {
             println("통신 오류 발생")
             e.printStackTrace()
             throw e

@@ -1,5 +1,6 @@
 package com.simplelogin.biz.naver.contorller
 
+import com.simplelogin.biz.naver.dto.ProfileDto
 import com.simplelogin.biz.naver.service.NaverService
 import io.swagger.v3.oas.annotations.Operation
 import lombok.RequiredArgsConstructor
@@ -49,5 +50,14 @@ class NaverApiController(
     @Operation(summary = "네이버 로그인 접근 토큰 삭제", description = "네이버 로그인 접근 토큰 삭제")
     fun tokenDelete(@PathVariable("token") token: String): ResponseEntity<String> {
         return naverService.deleteToken(token)
+    }
+
+    /**
+     * 네이버 회원 프로필 조회
+     * */
+    @GetMapping("/search/profile/{token}")
+    @Operation(summary = "네이버 회원 프로필 조회", description = "네이버 회원 프로필 조회")
+    fun searchProfile(@PathVariable("token") token: String): ProfileDto? {
+        return naverService.searchProfile(token)
     }
 }
